@@ -40,8 +40,7 @@ class SuggestionCommand : SlashCommand() {
 
         suggestionChannel.sendMessageEmbeds(embed.build()).setActionRow(
             success("suggest.yes", "Да!"),
-            danger("suggest.no", "Нет"),
-            secondary("suggest.info", "Дебаг")
+            danger("suggest.no", "Нет")
         ).queue { message ->
             Database.write(Databases.Suggestions, bytes(message.id), Suggestion(title, suggestion).toByteArray())
         }
