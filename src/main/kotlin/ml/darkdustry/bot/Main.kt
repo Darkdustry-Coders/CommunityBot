@@ -52,7 +52,7 @@ class Main(args: Array<String>) {
             setupCommands()
             console.consoleInput()
         } catch (e: Exception) {
-            err(e.message)
+            err(e)
             exit(0)
         }
     }
