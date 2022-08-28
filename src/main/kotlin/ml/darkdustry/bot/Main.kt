@@ -8,6 +8,7 @@ import ml.darkdustry.bot.Vars.console
 import ml.darkdustry.bot.Vars.exit
 import ml.darkdustry.bot.Vars.guild
 import ml.darkdustry.bot.Vars.jda
+import ml.darkdustry.bot.Vars.suggestionChannel
 import ml.darkdustry.bot.commands.administration.GetCommand
 import ml.darkdustry.bot.commands.administration.ShutdownCommand
 import ml.darkdustry.bot.commands.common.EchoCommand
@@ -42,9 +43,9 @@ class Main(args: Array<String>) {
 
                 // TODO: properties.json
 
-                guild = jda.getGuildById("993884930281050192")!!
+                guild = jda.getGuildById("810758118442663936")!!
 
-                // suggestionChannel = guild.getTextChannelById("878918624415465483")!!
+                suggestionChannel = guild.getTextChannelById("878923967862300712")!!
             }
 
             info("Setup finished in $duration ms")
