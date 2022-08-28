@@ -41,7 +41,7 @@ class Main(args: Array<String>) {
                     .build()
                     .awaitReady()
 
-                // TODO: properties.json
+                // TODO: create properties.json
 
                 guild = jda.getGuildById("810758118442663936")!!
 
