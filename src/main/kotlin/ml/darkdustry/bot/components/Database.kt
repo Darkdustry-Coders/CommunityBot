@@ -1,4 +1,4 @@
-package ml.darkdustry.bot.components.data
+package ml.darkdustry.bot.components
 
 import ml.darkdustry.bot.Vars
 import org.iq80.leveldb.DB
@@ -51,9 +51,8 @@ object Database {
             }
         }
     }
-}
 
-@Suppress("unused")
-enum class Databases {
-    Suggestions, Warns, Mutes
+    enum class Databases {
+        Suggestions, Warns, Mutes, Appeals
+    }
 }

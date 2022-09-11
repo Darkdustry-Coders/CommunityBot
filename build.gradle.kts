@@ -5,7 +5,6 @@ version = "1.0.0"
 
 plugins {
     kotlin("jvm") version "1.7.10"
-    application
 }
 
 tasks.withType<KotlinCompile> {
@@ -22,11 +21,6 @@ dependencies {
     val jline = "3.21.0"
 
     implementation("com.github.halibobor.leveldb-java:leveldb:1.23.1")
-
-    implementation("ch.qos.logback:logback-classic:1.2.11")
-
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-
     implementation("net.dv8tion:JDA:5.0.0-alpha.17")
 
     implementation("org.jline:jline-reader:$jline")
@@ -35,20 +29,16 @@ dependencies {
     implementation("com.github.Anuken.Arc:arc-core:$mindustryVersion")
     implementation("com.github.Anuken.Mindustry:core:$mindustryVersion")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation(kotlin("reflect"))
 }
 
 tasks.jar {
     manifest {
-        attributes["Main-Class"] = "ml.darkdustry.LoaderKt"
+        attributes["Main-Class"] = "ml.darkdustry.bot.MainKt"
     }
 
-    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) }) {
-        exclude("**/META-INF/*.SF")
-        exclude("**/META-INF/*.DSA")
-        exclude("**/META-INF/*.RSA")
-    }
-
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 

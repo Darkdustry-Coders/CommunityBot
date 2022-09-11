@@ -1,9 +1,6 @@
 package ml.darkdustry.core.commands
 
-import net.dv8tion.jda.api.entities.GuildChannel
-import net.dv8tion.jda.api.entities.IMentionable
-import net.dv8tion.jda.api.entities.Role
-import net.dv8tion.jda.api.entities.User
+import net.dv8tion.jda.api.entities.*
 import net.dv8tion.jda.api.interactions.commands.OptionType
 import kotlin.reflect.KClass
 

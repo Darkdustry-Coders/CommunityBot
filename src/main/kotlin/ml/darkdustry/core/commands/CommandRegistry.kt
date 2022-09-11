@@ -1,12 +1,8 @@
 package ml.darkdustry.core.commands
 
 import arc.util.Log.debug
-import ml.darkdustry.core.commands.annotations.Button
-import ml.darkdustry.core.commands.annotations.Command
-import ml.darkdustry.core.commands.annotations.Option
-import ml.darkdustry.core.commands.annotations.PermissionType
-import ml.darkdustry.core.commands.events.ButtonInteractionListener
-import ml.darkdustry.core.commands.events.SlashCommandInteractionListener
+import ml.darkdustry.core.commands.annotations.*
+import ml.darkdustry.core.commands.events.*
 import net.dv8tion.jda.api.Permission.*
 import net.dv8tion.jda.api.entities.*
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
@@ -36,6 +32,7 @@ class CommandRegistry(val commands: List<SlashCommand>, val mappers: List<Mapper
 
     internal val commandFunctions = mutableMapOf<String, Pair<KFunction<*>, List<String>>>()
     internal val buttonFunctions = mutableMapOf<String, KFunction<*>>()
+    internal val modalFunctions = mutableMapOf<String, KFunction<*>>()
 
     init {
         for (command in commands) {
@@ -77,6 +74,10 @@ class CommandRegistry(val commands: List<SlashCommand>, val mappers: List<Mapper
                     }
 
                     buttonFunctions["$name.${button.id.ifEmpty { function.name.lowercase() }}"] = function
+                }
+
+                function.findAnnotation<Modal>()?.let { modal ->
+                    modalFunctions["$name.${modal.name.ifEmpty { function.name.lowercase() }}"] = function
                 }
             }
 
@@ -145,7 +146,7 @@ class CommandRegistry(val commands: List<SlashCommand>, val mappers: List<Mapper
         if (firstUpdate) {
             firstUpdate = false
             guild.jda.addEventListener(
-                SlashCommandInteractionListener(this), ButtonInteractionListener(this)
+                SlashCommandInteractionListener(this), ButtonInteractionListener(this), ModalInteractionListener(this)
             )
         }
 

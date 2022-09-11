@@ -1,73 +1,52 @@
 package ml.darkdustry.bot
 
-import arc.util.Log.err
-import arc.util.Log.info
-import kotlinx.coroutines.runBlocking
-import ml.darkdustry.bot.Vars.commands
-import ml.darkdustry.bot.Vars.console
-import ml.darkdustry.bot.Vars.exit
-import ml.darkdustry.bot.Vars.guild
-import ml.darkdustry.bot.Vars.jda
-import ml.darkdustry.bot.Vars.suggestionChannel
+import arc.util.Log
 import ml.darkdustry.bot.commands.administration.GetCommand
 import ml.darkdustry.bot.commands.administration.ShutdownCommand
-import ml.darkdustry.bot.commands.common.EchoCommand
-import ml.darkdustry.bot.commands.common.HelpCommand
-import ml.darkdustry.bot.commands.common.PingCommand
-import ml.darkdustry.bot.commands.common.SuggestionCommand
+import ml.darkdustry.bot.commands.common.*
 import ml.darkdustry.bot.components.Console
-import ml.darkdustry.bot.components.data.Config
 import ml.darkdustry.core.commands.CommandRegistryBuilder
 import net.dv8tion.jda.api.JDABuilder
-import net.dv8tion.jda.api.OnlineStatus.IDLE
+import net.dv8tion.jda.api.OnlineStatus
 import net.dv8tion.jda.api.entities.Activity
 import kotlin.system.measureTimeMillis
 
-class Main(args: Array<String>) {
-    init {
-        val token = args.firstOrNull() ?: {
-            err("Cannot find token")
-            exit(0)
-        }
-
-        try {
-            val duration = measureTimeMillis {
-                console = Console()
-                Config()
-
-                jda = JDABuilder.createDefault(token as String)
-                    .setActivity(Activity.listening("Spotify"))
-                    .setStatus(IDLE)
-                    .build()
-                    .awaitReady()
-
-                // TODO: create properties.json
-
-                guild = jda.getGuildById("810758118442663936")!!
-
-                suggestionChannel = guild.getTextChannelById("878923967862300712")!!
-            }
-
-            info("Setup finished in $duration ms")
-            setupCommands()
-            console.consoleInput()
-        } catch (e: Exception) {
-            err(e)
-            exit(0)
-        }
+fun main(args: Array<String>) {
+    val token = args.firstOrNull() ?: {
+        Log.err("Cannot find token")
+        Vars.exit(2)
     }
 
-    companion object {
-        private fun setupCommands() = runBlocking {
-            info("Setup commands...")
+    try {
+        val duration = measureTimeMillis {
+            Console.init()
+
+            if (!Vars.mainDir.exists()) {
+                Vars.mainDir.mkdirs()
+                Log.info("Main bot directory generated: ${Vars.mainDir.absolutePath()}")
+            } else Log.info("Main bot directory: ${Vars.mainDir.absolutePath()}")
+
+            Vars.jda = JDABuilder.createDefault(token as String)
+                .setActivity(Activity.listening("Spotify"))
+                .setStatus(OnlineStatus.IDLE)
+                .build()
+                .awaitReady()
+
+            Vars.guild = Vars.jda.getGuildById("810758118442663936")!!
+
+            Vars.suggestionChannel = Vars.guild.getTextChannelById("878923967862300712")!!
+            Vars.appealChannel = Vars.guild.getTextChannelById("878923967862300712")!!
+
+            Vars.appealRole = Vars.guild.getRoleById("942813823260303401")!!
+
+            Log.info("Setup commands...")
             val commandsDuration = measureTimeMillis {
                 val commandRegistryBuilder =
                     CommandRegistryBuilder().addCommands(
                         // Public
-                        HelpCommand(),
                         PingCommand(),
                         EchoCommand(),
-                        SuggestionCommand(),
+                        AppealCommand(),
 
                         // Moderation
 
@@ -75,12 +54,17 @@ class Main(args: Array<String>) {
                         ShutdownCommand(),
                         GetCommand()
                     )
-                commands = commandRegistryBuilder.getCommands()
 
-                commandRegistryBuilder.build().updateCommands(guild)
+                commandRegistryBuilder.build().updateCommands(Vars.guild)
             }
 
-            info("Setup of commands finished in $commandsDuration ms")
+            Log.info("Setup of commands finished in $commandsDuration ms")
         }
+
+        Log.info("Setup finished in $duration ms")
+        Console.input()
+    } catch (e: Exception) {
+        Log.err(e)
+        Vars.exit(2)
     }
 }

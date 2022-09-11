@@ -1,11 +1,9 @@
 package ml.darkdustry.bot.commands.administration
 
 import ml.darkdustry.bot.Vars.mainDir
-import ml.darkdustry.bot.components.data.Databases
+import ml.darkdustry.bot.components.Database
 import ml.darkdustry.core.commands.SlashCommand
-import ml.darkdustry.core.commands.annotations.Command
-import ml.darkdustry.core.commands.annotations.Option
-import ml.darkdustry.core.commands.annotations.PermissionType
+import ml.darkdustry.core.commands.annotations.*
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import org.iq80.leveldb.DB
 import org.iq80.leveldb.Options
@@ -13,12 +11,12 @@ import org.iq80.leveldb.impl.Iq80DBFactory.*
 import java.io.File
 
 @Suppress("unused")
-@Command(PermissionType.ADMINISTRATOR, "get", "test")
+@Command(PermissionType.ADMINISTRATOR, "get", "Gets a value from local database.")
 class GetCommand : SlashCommand() {
     @Command
     fun get(
         event: SlashCommandInteractionEvent,
-        @Option place: Databases,
+        @Option place: Database.Databases,
         @Option value: String
     ) {
         val options = Options().createIfMissing(false)

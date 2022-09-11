@@ -8,17 +8,21 @@ import ml.darkdustry.bot.Vars.exit
 import ml.darkdustry.bot.Vars.jda
 import net.dv8tion.jda.api.entities.Category
 import net.dv8tion.jda.api.entities.TextChannel
-import org.jline.reader.EndOfFileException
-import org.jline.reader.LineReader
-import org.jline.reader.LineReaderBuilder
-import org.jline.reader.UserInterruptException
+import org.jline.reader.*
 import org.jline.terminal.Terminal
 import org.jline.terminal.TerminalBuilder
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class Console {
-    init {
+object Console {
+    private lateinit var terminal: Terminal
+    private lateinit var lineReader: LineReader
+    private lateinit var commandHandler: CommandHandler
+
+    private var dateTime: DateTimeFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss")
+    private var tags = arrayOf("&lc&fb[D]&fr", "&lb&fb[I]&fr", "&ly&fb[W]&fr", "&lr&fb[E]", "")
+
+    fun init() {
         try {
             commandHandler = CommandHandler("")
             terminal = TerminalBuilder.builder().jna(true).system(true).build()
@@ -77,11 +81,11 @@ class Console {
             }
         } catch (e: Exception) {
             err(e)
-            exit(0)
+            exit(2)
         }
     }
 
-    fun consoleInput() = runBlocking {
+    fun input() = runBlocking {
         info("Console unblocked")
         while (true) {
             try {
@@ -100,24 +104,15 @@ class Console {
         }
     }
 
-    companion object {
-        private lateinit var terminal: Terminal
-        private lateinit var lineReader: LineReader
-        private lateinit var commandHandler: CommandHandler
+    private fun handleCommandString(line: String) {
+        val response = commandHandler.handleMessage(line)
 
-        private var dateTime: DateTimeFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss")
-        private var tags = arrayOf("&lc&fb[D]&fr", "&lb&fb[I]&fr", "&ly&fb[W]&fr", "&lr&fb[E]", "")
-
-        private fun handleCommandString(line: String) {
-            val response = commandHandler.handleMessage(line)
-
-            when (response.type) {
-                CommandHandler.ResponseType.unknownCommand -> err("Invalid command. Type 'help' for help.")
-                CommandHandler.ResponseType.fewArguments -> err("Too few command arguments. Usage: ${response.command.text} ${response.command.paramText}")
-                CommandHandler.ResponseType.manyArguments -> err("Too many command arguments. Usage: ${response.command.text} ${response.command.paramText}")
-                CommandHandler.ResponseType.valid -> return
-                else -> return
-            }
+        when (response.type) {
+            CommandHandler.ResponseType.unknownCommand -> err("Invalid command. Type 'help' for help.")
+            CommandHandler.ResponseType.fewArguments -> err("Too few command arguments. Usage: ${response.command.text} ${response.command.paramText}")
+            CommandHandler.ResponseType.manyArguments -> err("Too many command arguments. Usage: ${response.command.text} ${response.command.paramText}")
+            CommandHandler.ResponseType.valid -> return
+            else -> return
         }
     }
 }
