@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-group = "ml.darkdustry"
+group = "tk.darkdustry"
 version = "1.0.0"
 
 plugins {
@@ -17,25 +17,20 @@ repositories {
 }
 
 dependencies {
-    val mindustryVersion = "v137"
-    val jline = "3.21.0"
+    implementation("net.dv8tion:JDA:5.0.0-alpha.19")
 
-    implementation("com.github.halibobor.leveldb-java:leveldb:1.23.1")
-    implementation("net.dv8tion:JDA:5.0.0-alpha.17")
-
-    implementation("org.jline:jline-reader:$jline")
-    implementation("org.jline:jline-terminal-jna:$jline")
-
-    implementation("com.github.Anuken.Arc:arc-core:$mindustryVersion")
-    implementation("com.github.Anuken.Mindustry:core:$mindustryVersion")
-
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation(kotlin("reflect"))
+    implementation("com.github.Anuken.Arc:arc-core:v138")
+    implementation("com.github.Anuken.Mindustry:core:v138") {
+        exclude("com.github.Anuken.Arc", "flabel")
+        exclude("com.github.Anuken.Arc", "freetype")
+        exclude("com.github.Anuken.Arc", "fx")
+        exclude("com.github.Anuken.Arc", "g3d")
+    }
 }
 
 tasks.jar {
     manifest {
-        attributes["Main-Class"] = "ml.darkdustry.bot.MainKt"
+        attributes["Main-Class"] = "tk.darkdustry.bot.MainKt"
     }
 
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
