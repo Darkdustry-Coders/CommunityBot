@@ -26,6 +26,9 @@ dependencies {
         exclude("com.github.Anuken.Arc", "fx")
         exclude("com.github.Anuken.Arc", "g3d")
     }
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation(kotlin("reflect"))
 }
 
 tasks.jar {

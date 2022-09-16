@@ -10,6 +10,8 @@ import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel
 import net.dv8tion.jda.api.requests.GatewayIntent.GUILD_MEMBERS
 import net.dv8tion.jda.api.requests.GatewayIntent.MESSAGE_CONTENT
+import tk.darkdustry.bot.commands.SendMap
+import tk.darkdustry.core.CommandRegistryBuilder
 
 lateinit var config: Config
 
@@ -21,6 +23,7 @@ lateinit var schematicsChannel: TextChannel
 
 val json = Json()
 val dataDirectory = Fi(".community")
+val mapsDirectory = dataDirectory.child("maps")
 
 fun main() {
     json.setOutputType(OutputType.json)
@@ -33,7 +36,10 @@ fun main() {
     } else {
         file.writeString(json.toJson(Config().also { config = it }))
         info("Config file generated. (@)", file.absolutePath())
+        return
     }
+
+    if (!mapsDirectory.exists()) mapsDirectory.mkdirs()
 
     jda = JDABuilder.createLight(config.token)
         .enableIntents(GUILD_MEMBERS, MESSAGE_CONTENT)
@@ -44,4 +50,6 @@ fun main() {
 
     mapsChannel = guild.getTextChannelById(config.mapsChannelId)!!
     schematicsChannel = guild.getTextChannelById(config.schematicsChannelId)!!
+
+    CommandRegistryBuilder().addCommands(SendMap()).build().updateCommands(guild)
 }
