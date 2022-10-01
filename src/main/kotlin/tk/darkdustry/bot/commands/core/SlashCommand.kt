@@ -1,9 +1,9 @@
-package tk.darkdustry.core
+package tk.darkdustry.bot.commands.core
 
 import net.dv8tion.jda.api.entities.emoji.Emoji
 import net.dv8tion.jda.api.interactions.commands.build.CommandData
 import net.dv8tion.jda.api.interactions.components.buttons.Button
-import tk.darkdustry.core.annotations.PermissionType
+import tk.darkdustry.bot.commands.core.annotations.PermissionType
 
 @Suppress("unused")
 abstract class SlashCommand {

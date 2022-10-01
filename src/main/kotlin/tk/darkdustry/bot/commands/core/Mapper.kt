@@ -1,4 +1,4 @@
-package tk.darkdustry.core
+package tk.darkdustry.bot.commands.core
 
 import net.dv8tion.jda.api.entities.*
 import net.dv8tion.jda.api.entities.Message.Attachment

@@ -1,4 +1,4 @@
-package tk.darkdustry.core.annotations
+package tk.darkdustry.bot.commands.core.annotations
 
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.VALUE_PARAMETER)

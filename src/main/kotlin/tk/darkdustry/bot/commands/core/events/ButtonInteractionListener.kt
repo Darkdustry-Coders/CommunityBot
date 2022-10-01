@@ -1,4 +1,4 @@
-package tk.darkdustry.core.events
+package tk.darkdustry.bot.commands.core.events
 
 import arc.util.Log.debug
 import kotlinx.coroutines.runBlocking
@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.GenericEvent
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent
 import net.dv8tion.jda.api.hooks.EventListener
-import tk.darkdustry.core.CommandRegistry
+import tk.darkdustry.bot.commands.core.CommandRegistry
 import kotlin.reflect.KClass
 import kotlin.reflect.full.callSuspend
 import kotlin.system.measureTimeMillis

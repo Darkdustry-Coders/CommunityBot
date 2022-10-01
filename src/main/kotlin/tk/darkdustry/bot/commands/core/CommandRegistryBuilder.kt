@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package tk.darkdustry.core
+package tk.darkdustry.bot.commands.core
 
 class CommandRegistryBuilder {
     private var commands: MutableList<SlashCommand> = mutableListOf()

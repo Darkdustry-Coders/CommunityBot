@@ -1,4 +1,4 @@
-package tk.darkdustry.core
+package tk.darkdustry.bot.commands.core
 
 import arc.util.Log.debug
 import net.dv8tion.jda.api.Permission.*
@@ -7,17 +7,13 @@ import net.dv8tion.jda.api.entities.Message.Attachment
 import net.dv8tion.jda.api.entities.channel.middleman.GuildChannel
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent
-import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions
-import net.dv8tion.jda.api.interactions.commands.OptionType
-import net.dv8tion.jda.api.interactions.commands.build.Commands
-import net.dv8tion.jda.api.interactions.commands.build.OptionData
-import tk.darkdustry.core.annotations.*
-import tk.darkdustry.core.events.ButtonInteractionListener
-import tk.darkdustry.core.events.SlashCommandInteractionListener
-import kotlin.reflect.KClass
-import kotlin.reflect.KFunction
-import kotlin.reflect.full.findAnnotation
-import kotlin.reflect.full.memberFunctions
+import net.dv8tion.jda.api.interactions.commands.*
+import net.dv8tion.jda.api.interactions.commands.build.*
+import tk.darkdustry.bot.commands.core.annotations.*
+import tk.darkdustry.bot.commands.core.annotations.Command
+import tk.darkdustry.bot.commands.core.events.*
+import kotlin.reflect.*
+import kotlin.reflect.full.*
 
 class CommandRegistry(private val commands: List<SlashCommand>, val mappers: List<Mapper<Any, Any?>>) {
     private var firstUpdate = true
@@ -54,8 +50,10 @@ class CommandRegistry(private val commands: List<SlashCommand>, val mappers: Lis
             when (permissions) {
                 PermissionType.Public -> commandData.defaultPermissions =
                     DefaultMemberPermissions.enabledFor(MESSAGE_SEND)
+
                 PermissionType.Moderator -> commandData.defaultPermissions =
                     DefaultMemberPermissions.enabledFor(KICK_MEMBERS)
+
                 PermissionType.Administrator -> commandData.defaultPermissions =
                     DefaultMemberPermissions.enabledFor(ADMINISTRATOR)
             }
