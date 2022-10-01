@@ -1,17 +1,11 @@
 package tk.darkdustry.bot.commands
 
 import arc.util.Log.err
-import arc.util.io.CounterInputStream
-import mindustry.io.*
-import mindustry.world.WorldContext
 import net.dv8tion.jda.api.entities.Message.Attachment
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
-import tk.darkdustry.bot.mapsChannel
 import tk.darkdustry.bot.commands.core.SlashCommand
 import tk.darkdustry.bot.commands.core.annotations.*
-import java.io.*
-import java.util.concurrent.CompletableFuture
-import java.util.zip.InflaterInputStream
+import tk.darkdustry.bot.mapsChannel
 
 @Suppress("unused")
 @Command(PermissionType.Public, "sendmap", "Sends your map in a special channel.")
