@@ -2,6 +2,7 @@ package tk.darkdustry.bot.components
 
 import arc.func.Prov
 import arc.graphics.*
+import arc.util.Log.err
 import arc.util.io.*
 import mindustry.Vars
 import mindustry.content.Blocks
@@ -33,6 +34,7 @@ object MapUtils {
     fun parseImage(pixmap: Pixmap, flip: Boolean): ByteArray {
         val writer = PixmapIO.PngWriter(pixmap.width * pixmap.height)
         val stream = Streams.OptimizedByteArrayOutputStream(pixmap.width * pixmap.height)
+
         return try {
             writer.setFlipY(flip)
             writer.write(stream, pixmap)
@@ -41,6 +43,23 @@ object MapUtils {
             Streams.emptyBytes
         } finally {
             writer.dispose()
+        }
+    }
+
+    fun generateMap(stream: InputStream): Map? {
+        try {
+            CounterInputStream(InflaterInputStream(stream)).use { counter ->
+                DataInputStream(counter).use { data ->
+                    SaveIO.readHeader(data)
+                    val version = FixedSave(data.readInt())
+                    val meta = version.getMeta(data)
+
+                    return meta.map
+                }
+            }
+        } catch (e: Exception) {
+            err(e)
+            return null
         }
     }
 
@@ -60,6 +79,7 @@ object MapUtils {
                         contentStream
                     )
                 }
+
                 version.region("preview_map", stream, counter) { input: DataInput ->
                     version.readMap(input, object : WorldContext {
                         override fun resize(width: Int, height: Int) {}
@@ -93,6 +113,7 @@ object MapUtils {
                         }
                     })
                 }
+
                 return pixmap
             }
         }
