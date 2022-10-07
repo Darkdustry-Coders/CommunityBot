@@ -5,6 +5,7 @@ import arc.util.serialization.Json
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel
+import tk.darkdustry.bot.components.ConfigUtils
 
 lateinit var config: ConfigUtils.Config
 

@@ -1,7 +1,9 @@
-package tk.darkdustry.bot
+package tk.darkdustry.bot.components
 
 import arc.util.Log
 import arc.util.serialization.JsonWriter
+import tk.darkdustry.bot.*
+import kotlin.system.exitProcess
 
 object ConfigUtils {
     fun init() {
@@ -15,7 +17,7 @@ object ConfigUtils {
         } else {
             file.writeString(json.toJson(Config().also { config = it }))
             Log.info("Config file generated. (@)", file.absolutePath())
-            return
+            exitProcess(0)
         }
     }
 
