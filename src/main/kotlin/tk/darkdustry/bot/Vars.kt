@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel
 
-lateinit var config: Config
+lateinit var config: ConfigUtils.Config
 
 lateinit var jda: JDA
 lateinit var guild: Guild
