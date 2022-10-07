@@ -18,6 +18,7 @@ dependencies {
     implementation("com.github.Anuken.Arc:arc-core:v139")
     implementation("com.github.Anuken.Mindustry:core:v139")
 
+    implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.19.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation(kotlin("reflect"))
 }

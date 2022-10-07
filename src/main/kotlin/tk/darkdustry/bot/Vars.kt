@@ -16,4 +16,6 @@ lateinit var mapsChannel: TextChannel
 lateinit var schematicsChannel: TextChannel
 
 val json = Json()
+
 val dataDirectory = Fi(".community")
+val sprites: Fi = dataDirectory.child("sprites")
