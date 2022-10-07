@@ -9,6 +9,8 @@ import java.io.IOException
 object Resources {
     fun init() {
         resources()
+
+        // Потом грузит спрайты в бота
     }
 
     private fun resources() {
