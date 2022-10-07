@@ -15,8 +15,8 @@ repositories {
 dependencies {
     implementation("net.dv8tion:JDA:5.0.0-alpha.19")
 
-    implementation("com.github.Anuken.Arc:arc-core:v138")
-    implementation("com.github.Anuken.Mindustry:core:v138")
+    implementation("com.github.Anuken.Arc:arc-core:v139")
+    implementation("com.github.Anuken.Mindustry:core:v139")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation(kotlin("reflect"))
