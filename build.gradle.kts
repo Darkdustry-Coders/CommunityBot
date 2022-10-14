@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation("net.dv8tion:JDA:5.0.0-alpha.19")
+    implementation("net.dv8tion:JDA:5.0.0-alpha.21")
 
     implementation("com.github.Anuken.Arc:arc-core:v139")
     implementation("com.github.Anuken.Mindustry:core:v139")
