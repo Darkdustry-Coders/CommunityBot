@@ -18,4 +18,6 @@ lateinit var schematicsChannel: TextChannel
 val json = Json()
 
 val dataDirectory = Fi(".community")
+val cache: Fi = dataDirectory.child("cache")
+val resources: Fi = dataDirectory.child("resources")
 val sprites: Fi = dataDirectory.child("sprites")

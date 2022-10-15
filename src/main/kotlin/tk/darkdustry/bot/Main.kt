@@ -1,32 +1,23 @@
 package tk.darkdustry.bot
 
-import arc.util.Log.err
 import net.dv8tion.jda.api.JDABuilder
-import net.dv8tion.jda.api.requests.GatewayIntent.*
-import tk.darkdustry.bot.commands.SendMap
-import tk.darkdustry.bot.commands.core.CommandRegistryBuilder
-import tk.darkdustry.bot.components.*
-import kotlin.system.exitProcess
-
+import net.dv8tion.jda.api.requests.GatewayIntent.GUILD_MEMBERS
+import net.dv8tion.jda.api.requests.GatewayIntent.MESSAGE_CONTENT
+import tk.darkdustry.bot.components.ConfigUtils
+import tk.darkdustry.bot.components.ResourceUtils
 
 fun main() {
     ConfigUtils.init()
-    Resources.init()
+    ResourceUtils.init()
 
     jda = JDABuilder.createLight(config.token)
         .enableIntents(GUILD_MEMBERS, MESSAGE_CONTENT)
+        .addEventListeners(Listener())
         .build()
         .awaitReady()
 
-    try {
-        guild = jda.getGuildById(config.guildId)!!
+    guild = jda.getGuildById(config.guildId)!!
 
-        mapsChannel = guild.getTextChannelById(config.mapsChannelId)!!
-        schematicsChannel = guild.getTextChannelById(config.schematicsChannelId)!!
-    } catch (e: NullPointerException) {
-        err("Configure config.json in the .community directory before using the bot!")
-        exitProcess(1)
-    }
-
-    CommandRegistryBuilder().addCommands(SendMap()).build().updateCommands(guild)
+    mapsChannel = guild.getTextChannelById(config.mapsChannelId)!!
+    schematicsChannel = guild.getTextChannelById(config.schematicsChannelId)!!
 }
