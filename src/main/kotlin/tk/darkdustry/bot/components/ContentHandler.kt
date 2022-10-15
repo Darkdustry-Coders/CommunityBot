@@ -1,7 +1,12 @@
 package tk.darkdustry.bot.components
 
+import arc.Core.batch
 import arc.files.Fi
 import arc.graphics.Pixmap
+import arc.graphics.PixmapIO.PngWriter
+import arc.graphics.g2d.Draw
+import arc.util.io.Streams.OptimizedByteArrayOutputStream
+import arc.util.io.Streams.emptyBytes
 import mindustry.entities.units.BuildPlan
 import mindustry.game.Schematic
 import mindustry.game.Schematics
@@ -16,7 +21,7 @@ object ContentHandler {
     }
 
     fun parseMapImage(map: Map): ByteArray {
-        return ImageUtils.parseImage(MapIO.generatePreview(map))
+        return parseImage(MapIO.generatePreview(map))
     }
 
     fun parseSchematic(file: File): Schematic {
@@ -29,8 +34,33 @@ object ContentHandler {
             BuildPlan(stile.x.toInt(), stile.y.toInt(), stile.rotation.toInt(), stile.block, stile.config)
         }
 
-        // TODO
+        (batch as SchematicSpriteBatch).setPixmap(pixmap)
 
-        return ImageUtils.parseImage(pixmap)
+        Draw.reset()
+        plans.each { plan ->
+            plan.animScale = 1f
+            plan.worldContext = false
+            plan.block.drawPlanRegion(plan, plans)
+            Draw.reset()
+        }
+
+        plans.each { plan -> plan.block.drawPlanConfigTop(plan, plans) }
+
+        return parseImage(pixmap)
+    }
+
+    fun parseImage(pixmap: Pixmap): ByteArray {
+        val writer = PngWriter(pixmap.width * pixmap.height)
+        val stream = OptimizedByteArrayOutputStream(pixmap.width * pixmap.height)
+
+        return try {
+            writer.setFlipY(false)
+            writer.write(stream, pixmap)
+            stream.toByteArray()
+        } catch (e: Exception) {
+            emptyBytes
+        } finally {
+            writer.dispose()
+        }
     }
 }

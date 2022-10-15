@@ -53,7 +53,7 @@ object ResourceUtils {
         }
 
         atlas.setErrorRegion("error")
-        batch = SpriteBatch(0)
+        batch = SchematicSpriteBatch()
 
         loadBlockColors()
 
@@ -115,10 +115,7 @@ object ResourceUtils {
         for (i in 0 until pixmap.width) {
             val block = content.block(i)
             if (block.itemDrop != null) block.mapColor.set(block.itemDrop.color) else block.mapColor.rgba8888(
-                pixmap.get(
-                    i,
-                    0
-                )
+                pixmap[i, 0]
             ).a(1f)
         }
         pixmap.dispose()
