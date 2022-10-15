@@ -5,6 +5,7 @@ import arc.Core.batch
 import arc.files.ZipFi
 import arc.graphics.Pixmap
 import arc.graphics.Texture
+import arc.graphics.g2d.Lines.useLegacyLine
 import arc.graphics.g2d.SpriteBatch
 import arc.graphics.g2d.TextureAtlas
 import arc.graphics.g2d.TextureAtlas.AtlasRegion
@@ -52,8 +53,8 @@ object ResourceUtils {
             }
         }
 
+        useLegacyLine = true
         atlas.setErrorRegion("error")
-        batch = SchematicSpriteBatch()
 
         loadBlockColors()
 
@@ -92,6 +93,7 @@ object ResourceUtils {
     private fun loadTextureDatas() {
         val data = TextureAtlasData(sprites.child("sprites.aatls"), sprites, false)
         atlas = TextureAtlas()
+        batch = SchematicBatch()
 
         data.pages.each { page ->
             page.texture = Texture.createEmpty(null)
@@ -103,8 +105,6 @@ object ResourceUtils {
             val atlasRegion = AtlasRegion(region.page.texture, region.left, region.top, region.width, region.height)
             atlasRegion.name = region.name
             atlasRegion.texture = region.page.texture
-
-            info(region.name)
 
             atlas.addRegion(region.name, atlasRegion)
         }

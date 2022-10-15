@@ -1,6 +1,5 @@
 package tk.darkdustry.bot.components
 
-import arc.Core.batch
 import arc.files.Fi
 import arc.graphics.Pixmap
 import arc.graphics.PixmapIO.PngWriter
@@ -12,7 +11,13 @@ import mindustry.game.Schematic
 import mindustry.game.Schematics
 import mindustry.io.MapIO
 import mindustry.maps.Map
+import tk.darkdustry.bot.currentGraphics
+import tk.darkdustry.bot.currentImage
+import java.awt.image.BufferedImage
+import java.awt.image.BufferedImage.TYPE_INT_ARGB
+import java.io.ByteArrayOutputStream
 import java.io.File
+import javax.imageio.ImageIO
 
 object ContentHandler {
 
@@ -29,14 +34,14 @@ object ContentHandler {
     }
 
     fun parseSchematicImage(schematic: Schematic): ByteArray {
-        val pixmap = Pixmap(schematic.width, schematic.height)
+        val image = BufferedImage(schematic.width * 32, schematic.height * 32, TYPE_INT_ARGB)
         val plans = schematic.tiles.map { stile ->
             BuildPlan(stile.x.toInt(), stile.y.toInt(), stile.rotation.toInt(), stile.block, stile.config)
         }
 
-        (batch as SchematicSpriteBatch).setPixmap(pixmap)
+        currentImage = image
+        currentGraphics = image.createGraphics()
 
-        Draw.reset()
         plans.each { plan ->
             plan.animScale = 1f
             plan.worldContext = false
@@ -46,10 +51,10 @@ object ContentHandler {
 
         plans.each { plan -> plan.block.drawPlanConfigTop(plan, plans) }
 
-        return parseImage(pixmap)
+        return parseImage(image)
     }
 
-    fun parseImage(pixmap: Pixmap): ByteArray {
+    private fun parseImage(pixmap: Pixmap): ByteArray {
         val writer = PngWriter(pixmap.width * pixmap.height)
         val stream = OptimizedByteArrayOutputStream(pixmap.width * pixmap.height)
 
@@ -61,6 +66,17 @@ object ContentHandler {
             emptyBytes
         } finally {
             writer.dispose()
+        }
+    }
+
+    private fun parseImage(image: BufferedImage): ByteArray {
+        val stream = ByteArrayOutputStream()
+
+        return try {
+            ImageIO.write(image, "png", stream)
+            stream.toByteArray()
+        } catch (e: Exception) {
+            emptyBytes
         }
     }
 }
