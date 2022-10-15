@@ -5,6 +5,7 @@ import arc.Core.batch
 import arc.files.ZipFi
 import arc.graphics.Pixmap
 import arc.graphics.Texture
+import arc.graphics.g2d.SpriteBatch
 import arc.graphics.g2d.TextureAtlas
 import arc.graphics.g2d.TextureAtlas.AtlasRegion
 import arc.graphics.g2d.TextureAtlas.TextureAtlasData
@@ -13,10 +14,12 @@ import arc.util.Http
 import arc.util.Log.info
 import arc.util.serialization.Jval.read
 import mindustry.Vars.content
+import mindustry.Vars.world
 import mindustry.core.ContentLoader
+import mindustry.core.World
 import mindustry.ctype.Content
 import mindustry.ctype.ContentType
-import mindustry.ctype.MappableContent
+import mindustry.world.Tile
 import tk.darkdustry.bot.resources
 import tk.darkdustry.bot.sprites
 import kotlin.system.measureTimeMillis
@@ -24,8 +27,6 @@ import kotlin.system.measureTimeMillis
 object ResourceUtils {
 
     fun init() {
-        if (!sprites.exists()) sprites.mkdirs()
-
         downloadResources()
 
         content = ContentLoader()
@@ -52,13 +53,21 @@ object ResourceUtils {
         }
 
         atlas.setErrorRegion("error")
-        batch = CustomSpriteBatch()
+        batch = SpriteBatch(0)
 
         loadBlockColors()
+
+        world = object : World() {
+            override fun tile(x: Int, y: Int): Tile {
+                return Tile(x, y)
+            }
+        }
     }
 
     private fun downloadResources() {
-        Http.get("https://api.github.com/repos/Anuken/Mindustry/releases/latest").block { release ->
+        if (resources.child("Mindustry.jar").exists()) return
+
+        Http.get("https://api.github.com/repos/Anuken/Mindustry/releases/79000151").block { release ->
             Http.get(read(release.resultAsString).get("assets").asArray().get(0).getString("browser_download_url"))
                 .block { response ->
                     info("Downloading Mindustry.jar...")
@@ -75,13 +84,13 @@ object ResourceUtils {
                         }
                     }
 
-                    info("Downloaded {${sprites.list().size} files in ${duration}ms")
+                    info("Downloaded ${sprites.list().size} files in ${duration}ms")
                 }
         }
     }
 
     private fun loadTextureDatas() {
-        val data = TextureAtlasData(sprites.child("sprites.atlas"), sprites, false)
+        val data = TextureAtlasData(sprites.child("sprites.aatls"), sprites, false)
         atlas = TextureAtlas()
 
         data.pages.each { page ->

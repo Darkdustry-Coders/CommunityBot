@@ -7,6 +7,11 @@ import tk.darkdustry.bot.components.ConfigUtils
 import tk.darkdustry.bot.components.ResourceUtils
 
 fun main() {
+    dataDirectory.mkdirs()
+    cache.mkdirs()
+    resources.mkdirs()
+    sprites.mkdirs()
+
     ConfigUtils.init()
     ResourceUtils.init()
 
