@@ -1,13 +1,10 @@
 package tk.darkdustry.bot
 
-import arc.files.Fi
-import arc.util.Log.info
-import mindustry.io.MapIO
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 import net.dv8tion.jda.api.utils.FileUpload
-import tk.darkdustry.bot.components.ImageUtils
+import tk.darkdustry.bot.components.ContentHandler
 
 class Listener : ListenerAdapter() {
 
@@ -16,29 +13,18 @@ class Listener : ListenerAdapter() {
 
         when (event.channel) {
             mapsChannel -> parseMap(event)
-            schematicsChannel -> {}
+            schematicsChannel -> parseSchematic(event)
         }
     }
 
     private fun parseMap(event: MessageReceivedEvent) {
-        info("Received a message.")
-
         if (event.message.attachments.size != 1) return
 
         val attachment = event.message.attachments[0]
 
-        info("Got a map.")
-
         attachment.proxy.downloadToFile(cache.child(attachment.fileName).file()).thenAccept { file ->
-            info("File downloaded.")
-
-            val map = MapIO.createMap(Fi(file), true)
-
-            info("Map created.")
-
-            val pixmap = MapIO.generatePreview(map)
-
-            info("Sending a map.")
+            val map = ContentHandler.parseMap(file)
+            val image = ContentHandler.parseMapImage(map)
 
             event.channel.sendMessageEmbeds(
                 EmbedBuilder()
@@ -46,8 +32,26 @@ class Listener : ListenerAdapter() {
                     .setDescription(map.description())
                     .setAuthor(map.author())
                     .setImage("attachment://image.png").build()
-            ).addFiles(FileUpload.fromData(ImageUtils.parseImage(pixmap), "image.png"))
-                .queue { message -> info("Map sent.") }
+            ).addFiles(FileUpload.fromData(image, "image.png")).queue()
+        }
+    }
+
+    private fun parseSchematic(event: MessageReceivedEvent) {
+        if (event.message.attachments.size != 1) return
+
+        val attachment = event.message.attachments[0]
+
+        attachment.proxy.downloadToFile(cache.child(attachment.fileName).file()).thenAccept { file ->
+            val schematic = ContentHandler.parseSchematic(file)
+            val image = ContentHandler.parseSchematicImage(schematic)
+
+            event.channel.sendMessageEmbeds(
+                EmbedBuilder()
+                    .setTitle(schematic.name())
+                    .setDescription(schematic.description())
+                    .setImage("attachment://image.png")
+                    .build()
+            ).addFiles(FileUpload.fromData(image, "image.png")).queue()
         }
     }
 }

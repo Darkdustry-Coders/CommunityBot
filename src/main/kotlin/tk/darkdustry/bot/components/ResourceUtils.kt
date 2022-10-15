@@ -104,6 +104,8 @@ object ResourceUtils {
             atlasRegion.name = region.name
             atlasRegion.texture = region.page.texture
 
+            info(region.name)
+
             atlas.addRegion(region.name, atlasRegion)
         }
     }
