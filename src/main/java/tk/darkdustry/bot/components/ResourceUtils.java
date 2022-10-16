@@ -13,9 +13,11 @@ import mindustry.core.World;
 import mindustry.ctype.ContentType;
 import mindustry.world.Tile;
 
+import javax.imageio.ImageIO;
+
 import static arc.Core.*;
 import static arc.graphics.g2d.Lines.useLegacyLine;
-import static arc.util.Log.info;
+import static arc.util.Log.*;
 import static arc.util.serialization.Jval.read;
 import static mindustry.Vars.*;
 import static tk.darkdustry.bot.Vars.*;
@@ -83,12 +85,20 @@ public class ResourceUtils {
 
     private static void loadTextureDatas() {
         var data = new TextureAtlasData(sprites.child("sprites.aatls"), sprites, false);
+
         atlas = new TextureAtlas();
+        batch = new SchematicBatch();
 
         data.getPages().each(page -> {
-            page.texture = Texture.createEmpty(null);
-            page.texture.width = page.width;
-            page.texture.height = page.height;
+            try {
+                page.texture = Texture.createEmpty(null);
+                page.texture.width = page.width;
+                page.texture.height = page.height;
+
+                images.put(page, ImageIO.read(page.textureFile.file()));
+            } catch (Exception e) {
+                err(e);
+            }
         });
 
         data.getRegions().each(region -> {
@@ -97,7 +107,10 @@ public class ResourceUtils {
             atlasRegion.texture = region.page.texture;
 
             atlas.addRegion(region.name, atlasRegion);
+            regions.put(atlasRegion, images.get(region.page));
         });
+
+        info("Loaded @ pages, @ regions.", data.getPages().size, data.getRegions().size);
     }
 
     private static void loadBlockColors() {
