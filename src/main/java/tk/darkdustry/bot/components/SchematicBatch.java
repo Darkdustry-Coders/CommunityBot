@@ -1,8 +1,8 @@
 package tk.darkdustry.bot.components;
 
 import arc.graphics.Texture;
-import arc.graphics.g2d.SpriteBatch;
-import arc.graphics.g2d.TextureRegion;
+import arc.graphics.g2d.*;
+import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.math.Mathf;
 
 import java.awt.geom.AffineTransform;
@@ -23,11 +23,11 @@ public class SchematicBatch extends SpriteBatch {
         y *= 4;
 
         var transform = new AffineTransform();
-        transform.translate(x, currentImage.getHeight() - height - y);
+        transform.translate(x, currentImage.getHeight() - height * 4f - y);
         transform.rotate(-rotation * Mathf.degRad, originX * 4, originY * 4);
 
         currentGraphics.setTransform(transform);
-        currentGraphics.drawImage(regions.get(region), 0, 0, (int) width * 4, (int) height * 4, null);
+        currentGraphics.drawImage(regions.get(((AtlasRegion) region).name), 0, 0, (int) width * 4, (int) height * 4, null);
     }
 
     @Override

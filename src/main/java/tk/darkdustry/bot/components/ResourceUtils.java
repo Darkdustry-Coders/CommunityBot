@@ -4,13 +4,14 @@ import arc.files.ZipFi;
 import arc.graphics.Pixmap;
 import arc.graphics.Texture;
 import arc.graphics.g2d.TextureAtlas;
-import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.graphics.g2d.TextureAtlas.TextureAtlasData;
 import arc.util.Http;
 import arc.util.Time;
 import mindustry.core.*;
-import mindustry.ctype.*;
+import mindustry.ctype.ContentType;
 import mindustry.world.Tile;
+
+import javax.imageio.ImageIO;
 
 import static arc.Core.*;
 import static arc.graphics.g2d.Draw.scl;
@@ -48,10 +49,6 @@ public class ResourceUtils {
                     content.load();
                     content.loadIcon();
                 } catch (Exception ignored) {}
-
-                if (content instanceof UnlockableContent unlockableContent) {
-                    err("@ has @ icon!", unlockableContent.name, unlockableContent.fullIcon);
-                }
             });
         }
 
@@ -65,7 +62,11 @@ public class ResourceUtils {
     }
 
     private static void downloadResources() {
-        if (true) return;
+        var mindustry = resources.child("Mindustry.jar");
+        if (mindustry.exists()) {
+            // TODO проверка на версию
+            return;
+        }
 
         Http.get("https://api.github.com/repos/Anuken/Mindustry/releases/79000151").block(release -> {
             var assets = read(release.getResultAsString()).get("assets").asArray();
@@ -73,12 +74,11 @@ public class ResourceUtils {
                 info("Downloading Mindustry.jar...");
                 Time.mark();
 
-                var zip = resources.child("Mindustry.jar");
-                zip.writeBytes(response.getResult());
+                mindustry.writeBytes(response.getResult());
 
                 info("Mindustry.jar downloaded in @ms.", Time.elapsed());
 
-                new ZipFi(zip).child("sprites").walk(fi -> {
+                new ZipFi(mindustry).child("sprites").walk(fi -> {
                     info("Copying @ into @...", fi.name(), sprites.path());
                     if (fi.isDirectory()) fi.copyFilesTo(sprites);
                     else fi.copyTo(sprites);
@@ -95,19 +95,17 @@ public class ResourceUtils {
         atlas = new TextureAtlas();
 
         data.getPages().each(page -> {
-            page.texture = Texture.createEmpty(null);
-            page.texture.width = page.width;
-            page.texture.height = page.height;
+            try {
+                page.texture = Texture.createEmpty(null);
+                images.put(page, ImageIO.read(page.textureFile.file()));
+            } catch (Exception e) {
+                err(e);
+            }
         });
 
-        data.getRegions().each(region -> atlas.addRegion(region.name, new AtlasRegion(region.page.texture, region.left, region.top, region.width, region.height) {{
-            name = region.name;
-            texture = region.page.texture;
-        }}));
+        data.getRegions().each(region -> atlas.addRegion(region.name, new ImageRegion(region)));
 
-        // DO NOT MOVE THIS
         atlas.setErrorRegion("error");
-
         batch = new SchematicBatch();
 
         info("Loaded @ pages, @ regions.", data.getPages().size, data.getRegions().size);
