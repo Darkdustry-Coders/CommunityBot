@@ -1,12 +1,12 @@
 package tk.darkdustry.bot;
 
 import arc.files.Fi;
-import arc.graphics.g2d.TextureAtlas.TextureAtlasData.AtlasPage;
 import arc.struct.ObjectMap;
 import arc.util.serialization.Json;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.emoji.RichCustomEmoji;
 import tk.darkdustry.bot.components.ConfigUtils.Config;
 
 import java.awt.Graphics2D;
@@ -27,7 +27,7 @@ public class Vars {
     public static final Fi resources = dataDirectory.child("resources");
     public static final Fi sprites = dataDirectory.child("sprites");
 
-    public static final ObjectMap<AtlasPage, BufferedImage> images = new ObjectMap<>();
+    public static final ObjectMap<String, RichCustomEmoji> emojis = new ObjectMap<>();
     public static final ObjectMap<String, BufferedImage> regions = new ObjectMap<>();
 
     public static BufferedImage currentImage;
