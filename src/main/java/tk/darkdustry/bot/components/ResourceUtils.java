@@ -1,6 +1,5 @@
 package tk.darkdustry.bot.components;
 
-import arc.Core;
 import arc.files.ZipFi;
 import arc.graphics.Pixmap;
 import arc.graphics.Texture;
@@ -47,7 +46,7 @@ public class ResourceUtils {
             content.getBy(type).each(content -> {
                 try {
                     content.load();
-                    loadIcon(content);
+                    content.loadIcon();
                 } catch (Exception ignored) {}
 
                 if (content instanceof UnlockableContent unlockableContent) {
@@ -94,7 +93,6 @@ public class ResourceUtils {
         var data = new TextureAtlasData(sprites.child("sprites.aatls"), sprites, false);
 
         atlas = new TextureAtlas();
-        atlas.setErrorRegion("error");
 
         data.getPages().each(page -> {
             page.texture = Texture.createEmpty(null);
@@ -106,6 +104,9 @@ public class ResourceUtils {
             name = region.name;
             texture = region.page.texture;
         }}));
+
+        // DO NOT MOVE THIS
+        atlas.setErrorRegion("error");
 
         batch = new SchematicBatch();
 
@@ -122,10 +123,5 @@ public class ResourceUtils {
         pixmap.dispose();
 
         info("Loaded @ block colors.", pixmap.width);
-    }
-
-    private static void loadIcon(Content content) {
-        if (content instanceof UnlockableContent unlock)
-            unlock.fullIcon = atlas.find(unlock.getContentType().name() + "-" + unlock.name + "-full", atlas.find(unlock.name + "-full", atlas.find(unlock.name, atlas.find(unlock.getContentType().name() + "-" + unlock.name, atlas.find(unlock.name + "1", atlas.find("error"))))));
     }
 }
