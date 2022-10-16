@@ -4,8 +4,8 @@ import arc.files.ZipFi;
 import arc.graphics.Pixmap;
 import arc.graphics.Texture;
 import arc.graphics.g2d.TextureAtlas;
-import arc.graphics.g2d.TextureAtlas.TextureAtlasData.AtlasPage;
 import arc.graphics.g2d.TextureAtlas.TextureAtlasData;
+import arc.graphics.g2d.TextureAtlas.TextureAtlasData.AtlasPage;
 import arc.struct.ObjectMap;
 import arc.util.*;
 import mindustry.core.*;
@@ -13,13 +13,12 @@ import mindustry.ctype.ContentType;
 import mindustry.world.Tile;
 
 import javax.imageio.ImageIO;
-
 import java.awt.image.BufferedImage;
 
 import static arc.Core.*;
 import static arc.graphics.g2d.Draw.scl;
 import static arc.graphics.g2d.Lines.useLegacyLine;
-import static arc.util.Log.*;
+import static arc.util.Log.info;
 import static arc.util.serialization.Jval.read;
 import static mindustry.Vars.*;
 import static tk.darkdustry.bot.Vars.*;
