@@ -8,8 +8,7 @@ import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.graphics.g2d.TextureAtlas.TextureAtlasData;
 import arc.util.Http;
 import arc.util.Time;
-import mindustry.core.ContentLoader;
-import mindustry.core.World;
+import mindustry.core.*;
 import mindustry.ctype.ContentType;
 import mindustry.world.Tile;
 
@@ -28,6 +27,8 @@ public class ResourceUtils {
         downloadResources();
 
         content = new ContentLoader();
+        state = new GameState();
+
         content.createBaseContent();
         for (var type : ContentType.all) {
             content.getBy(type).each(content -> {

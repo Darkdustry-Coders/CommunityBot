@@ -17,6 +17,7 @@ import java.io.*;
 
 import static arc.util.io.Streams.emptyBytes;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
+import static tk.darkdustry.bot.Vars.*;
 
 public class ContentHandler {
 
@@ -35,6 +36,11 @@ public class ContentHandler {
     public static byte[] parseSchematicImage(Schematic schematic) {
         var image = new BufferedImage(schematic.width * 32, schematic.height * 32, TYPE_INT_ARGB);
         var plans = schematic.tiles.map(stile -> new BuildPlan(stile.x, stile.y, stile.rotation, stile.block, stile.config));
+
+        currentImage = image;
+        currentGraphics = image.createGraphics();
+
+        Draw.reset();
 
         plans.each(plan -> {
             plan.animScale = 1f;
