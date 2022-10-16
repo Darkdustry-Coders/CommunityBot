@@ -37,6 +37,12 @@ public class Main {
             assert mapsChannel != null && schematicsChannel != null;
 
             RestActionImpl.setDefaultFailure(null);
+
+            // Update prefix
+            handler.setPrefix(config.prefix);
+            guild.getSelfMember().modifyNickname("[" + config.prefix + "] " + jda.getSelfUser().getName()).queue();
+
+            Listener.loadCommands();
         } catch (Exception e) {
             err("Failed to launch Community Bot. Make sure the provided token and guild/channel IDs in the configuration are correct.");
             err(e);

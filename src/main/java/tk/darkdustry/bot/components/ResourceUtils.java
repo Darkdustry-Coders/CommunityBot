@@ -21,6 +21,7 @@ import static arc.graphics.g2d.Lines.useLegacyLine;
 import static arc.util.Log.info;
 import static arc.util.serialization.Jval.read;
 import static mindustry.Vars.*;
+import static mindustry.content.Items.*;
 import static tk.darkdustry.bot.Vars.*;
 
 public class ResourceUtils {

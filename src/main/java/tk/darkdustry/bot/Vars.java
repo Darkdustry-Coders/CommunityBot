@@ -2,7 +2,9 @@ package tk.darkdustry.bot;
 
 import arc.files.Fi;
 import arc.struct.ObjectMap;
+import arc.util.CommandHandler;
 import arc.util.serialization.Json;
+import mindustry.type.Item;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -13,6 +15,7 @@ import java.awt.image.BufferedImage;
 
 public class Vars {
     public static final Json json = new Json();
+    public static final CommandHandler handler = new CommandHandler("");
 
     public static final Fi dataDirectory = Fi.get(".community");
     public static final Fi cache = dataDirectory.child("cache");
