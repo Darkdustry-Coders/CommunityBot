@@ -54,7 +54,7 @@ public class ResourceUtils {
         var mindustry = resources.child("Mindustry.jar");
         if (mindustry.exists()) return;
 
-        Http.get("https://api.github.com/repos/Anuken/Mindustry/releases/79000151").block(release -> {
+        Http.get("https://api.github.com/repos/Anuken/Mindustry/releases/79000151").timeout(Integer.MAX_VALUE).block(release -> {
             var assets = read(release.getResultAsString()).get("assets").asArray();
             Http.get(assets.get(0).getString("browser_download_url")).block(response -> {
                 info("Downloading Mindustry.jar...");
