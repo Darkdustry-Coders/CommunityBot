@@ -10,7 +10,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import tk.darkdustry.bot.components.ContentHandler;
 
 import java.io.File;
-import java.util.Objects;
 
 import static arc.graphics.Color.scarlet;
 import static arc.util.Strings.*;
@@ -24,8 +23,14 @@ public class Listener extends ListenerAdapter {
     public static void loadCommands(String prefix) {
         handler.setPrefix(prefix);
 
+        handler.<Message>register("help", "Список всех команд.", (args, message) -> {
+            var builder = new StringBuilder();
+            handler.getCommandList().each(command -> builder.append(prefix).append("**").append(command.text).append("**").append(command.paramText).append(" - ").append(command.description).append("\n"));
+            reply(message, ":newspaper: Список всех команд:", builder.toString(), accent);
+        });
+
         handler.<Message>register("postmap", "Отправить карту в специальный канал.", (args, message) -> {
-            if (message.getAttachments().size() != 1 || !Objects.equals(message.getAttachments().get(0).getFileExtension(), "msav")) {
+            if (message.getAttachments().size() != 1 || !"msav".equals(message.getAttachments().get(0).getFileExtension())) {
                 reply(message, ":warning: Ошибка", ":link: Необходимо прикрепить 1 файл с расширением **.msav**", scarlet);
                 return;
             }
@@ -39,17 +44,17 @@ public class Listener extends ListenerAdapter {
                 var embed = new EmbedBuilder()
                         .setTitle(map.name())
                         .setDescription(map.description())
-                        .setAuthor(requireNonNull(message.getMember()).getEffectiveName(), message.getMember().getEffectiveAvatarUrl(), message.getMember().getEffectiveAvatarUrl())
+                        .setAuthor(requireNonNull(message.getMember()).getEffectiveName(), attachment.getUrl(), message.getMember().getEffectiveAvatarUrl())
                         .setFooter(map.width + "x" + map.height)
                         .setColor(accent.argb8888())
                         .setImage("attachment://image.png");
 
-                mapsWebhook.sendMessageEmbeds(embed.build()).addFiles(fromData(image, "image.png")).queue(queue -> reply(message, ":white_check_mark: Успешно", ":map: Карта отправлена в " + mapsWebhook.getChannel().getAsMention(), accent));
+                mapsWebhook.sendMessageEmbeds(embed.build()).addFiles(fromData(image, "image.png")).queue(queue -> reply(message, ":map: Успешно", "Карта отправлена в " + mapsWebhook.getChannel().getAsMention(), accent));
             }, t -> reply(message, ":warning: Ошибка", getSimpleMessage(t), scarlet)));
         });
 
         handler.<Message>register("postschem", "Отправить схему в специальный канал.", (args, message) -> {
-            if (message.getAttachments().size() != 1 || !Objects.equals(message.getAttachments().get(0).getFileExtension(), "msch")) {
+            if (message.getAttachments().size() != 1 || !"msch".equals(message.getAttachments().get(0).getFileExtension())) {
                 reply(message, ":warning: Ошибка", ":link: Необходимо прикрепить 1 файл с расширением **.msch**", scarlet);
                 return;
             }
@@ -61,22 +66,18 @@ public class Listener extends ListenerAdapter {
                 var image = ContentHandler.parseSchematicImage(schematic);
 
                 var builder = new StringBuilder();
-                schematic.requirements().each((item, amount) -> {
-                    if (emojis.containsKey(item)) builder.append("<:").append(item.name.replaceAll("-", "")).append(":").append(emojis.get(item)).append(">");
-                    else builder.append(item.name);
-                    builder.append(" ").append(amount).append(" ");
-                });
+                schematic.requirements().each((item, amount) -> builder.append(emojis.containsKey(item) ? format("<:@:@>", item.name.replaceAll("-", ""), emojis.get(item)) : item.name).append(" ").append(amount).append(" "));
 
                 var embed = new EmbedBuilder()
                         .setTitle(schematic.name())
                         .setDescription(schematic.description())
-                        .setAuthor(requireNonNull(message.getMember()).getEffectiveName(), message.getMember().getEffectiveAvatarUrl(), message.getMember().getEffectiveAvatarUrl())
-                        .addField("Ресурсы для постройки", builder.toString(), true)
-                        .setFooter(schematic.width + "x" + schematic.height + ", " + schematic.tiles.size + " блоков")
+                        .setAuthor(requireNonNull(message.getMember()).getEffectiveName(), attachment.getUrl(), message.getMember().getEffectiveAvatarUrl())
+                        .addField("Requirements", builder.toString(), true)
+                        .setFooter(schematic.width + "x" + schematic.height + ", " + schematic.tiles.size + " blocks")
                         .setColor(accent.argb8888())
                         .setImage("attachment://image.png");
 
-                schematicsWebhook.sendMessageEmbeds(embed.build()).addFiles(fromData(image, "image.png")).queue(queue -> reply(message, ":white_check_mark: Успешно", ":wrench: Схема отправлена в " + schematicsWebhook.getChannel().getAsMention(), accent));
+                schematicsWebhook.sendMessageEmbeds(embed.build()).addFiles(fromData(image, "image.png")).queue(queue -> reply(message, ":wrench: Успешно", "Схема отправлена в " + schematicsWebhook.getChannel().getAsMention(), accent));
             }, t -> reply(message, ":warning: Ошибка", getSimpleMessage(t), scarlet)));
         });
     }

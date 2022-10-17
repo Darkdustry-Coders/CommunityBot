@@ -9,7 +9,6 @@ import arc.graphics.g2d.TextureAtlas.TextureAtlasData.AtlasPage;
 import arc.struct.ObjectMap;
 import arc.util.*;
 import mindustry.core.*;
-import mindustry.ctype.ContentType;
 import mindustry.world.Tile;
 
 import javax.imageio.ImageIO;
@@ -33,21 +32,10 @@ public class ResourceUtils {
         state = new GameState();
 
         content.createBaseContent();
-        for (var type : ContentType.all) {
-            content.getBy(type).each(content -> loadIgnoreErrors(content::init));
-        }
 
+        loadIgnoreErrors(content::init);
         loadTextureDatas();
-
-        useLegacyLine = true;
-        scl = 0.25f;
-
-        for (var type : ContentType.all) {
-            content.getBy(type).each(content -> {
-                loadIgnoreErrors(content::load);
-                loadIgnoreErrors(content::loadIcon);
-            });
-        }
+        loadIgnoreErrors(content::load);
 
         loadBlockColors();
         loadItemEmojis();
@@ -57,6 +45,9 @@ public class ResourceUtils {
                 return new Tile(x, y);
             }
         };
+
+        useLegacyLine = true;
+        scl = 1f / 4f;
     }
 
     private static void downloadResources() {
