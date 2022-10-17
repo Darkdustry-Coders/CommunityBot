@@ -21,6 +21,7 @@ import static arc.graphics.g2d.Lines.useLegacyLine;
 import static arc.util.Log.info;
 import static arc.util.serialization.Jval.read;
 import static mindustry.Vars.*;
+import static mindustry.content.Items.*;
 import static tk.darkdustry.bot.Vars.*;
 
 public class ResourceUtils {
@@ -49,6 +50,7 @@ public class ResourceUtils {
         }
 
         loadBlockColors();
+        loadItemEmojis();
 
         world = new World() {
             public Tile tile(int x, int y) {
@@ -111,6 +113,31 @@ public class ResourceUtils {
         pixmap.dispose();
 
         info("Loaded @ block colors.", pixmap.width);
+    }
+
+    private static void loadItemEmojis() {
+        emojis.putAll(
+                scrap, 770045449750577192L,
+                copper, 770045449603645492L,
+                lead, 770045449846521856L,
+                graphite, 770045449729343488L,
+                coal, 770045449582411817L,
+                titanium, 770045449822142554L,
+                thorium, 770045449612558366L,
+                silicon, 770045449696182302L,
+                plastanium, 801022400211976243L,
+                phaseFabric, 770045449326821413L,
+                surgeAlloy, 770045449700507668L,
+                sporePod, 770045449692250123L,
+                sand, 770045449758441502L,
+                blastCompound, 770045449654108211L,
+                pyratite, 770045449335209985L,
+                metaglass, 770045449834463242L,
+                beryllium, 972298068097662987L,
+                tungsten, 962490016506994708L,
+                oxide, 973958882563063891L,
+                carbide, 973958957909573673L
+        );
     }
 
     private static void loadIgnoreErrors(UnsafeRunnable runnable) {

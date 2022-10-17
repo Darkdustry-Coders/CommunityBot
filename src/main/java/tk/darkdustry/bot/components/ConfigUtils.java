@@ -26,8 +26,12 @@ public class ConfigUtils {
         public String token = "token";
         public String prefix = "!";
 
-        public long guildId = 0L;
         public long mapsChannelId = 0L;
         public long schematicsChannelId = 0L;
+
+        public long mapsWebhookId = 0L;
+        public long schematicsWebhookId = 0L;
+        public String mapsWebhookToken = "token";
+        public String schematicsWebhookToken = "token";
     }
 }

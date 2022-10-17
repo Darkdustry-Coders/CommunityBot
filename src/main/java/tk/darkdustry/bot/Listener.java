@@ -5,7 +5,6 @@ import arc.graphics.Color;
 import arc.util.UnsafeRunnable;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.Webhook;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import tk.darkdustry.bot.components.ContentHandler;
@@ -14,14 +13,17 @@ import java.io.File;
 import java.util.Objects;
 
 import static arc.graphics.Color.scarlet;
-import static arc.util.Strings.getSimpleMessage;
+import static arc.util.Strings.*;
+import static java.util.Objects.requireNonNull;
 import static mindustry.graphics.Pal.accent;
 import static net.dv8tion.jda.api.utils.FileUpload.fromData;
 import static tk.darkdustry.bot.Vars.*;
 
 public class Listener extends ListenerAdapter {
 
-    public static void loadCommands() {
+    public static void loadCommands(String prefix) {
+        handler.setPrefix(prefix);
+
         handler.<Message>register("postmap", "Отправить карту в специальный канал.", (args, message) -> {
             if (message.getAttachments().size() != 1 || !Objects.equals(message.getAttachments().get(0).getFileExtension(), "msav")) {
                 reply(message, ":warning: Ошибка", ":link: Необходимо прикрепить 1 файл с расширением **.msav**", scarlet);
@@ -37,12 +39,12 @@ public class Listener extends ListenerAdapter {
                 var embed = new EmbedBuilder()
                         .setTitle(map.name())
                         .setDescription(map.description())
-                        .setAuthor(message.getMember().getEffectiveName(), message.getMember().getEffectiveAvatarUrl(), message.getMember().getEffectiveAvatarUrl())
+                        .setAuthor(requireNonNull(message.getMember()).getEffectiveName(), message.getMember().getEffectiveAvatarUrl(), message.getMember().getEffectiveAvatarUrl())
                         .setFooter(map.width + "x" + map.height)
                         .setColor(accent.argb8888())
                         .setImage("attachment://image.png");
 
-                mapsChannel.sendMessageEmbeds(embed.build()).addFiles(fromData(image, "image.png")).queue(queue -> reply(message, ":white_check_mark: Успешно", ":map: Карта отправлена в " + mapsChannel.getAsMention(), accent));
+                mapsWebhook.sendMessageEmbeds(embed.build()).addFiles(fromData(image, "image.png")).queue(queue -> reply(message, ":white_check_mark: Успешно", ":map: Карта отправлена в " + mapsWebhook.getChannel().getAsMention(), accent));
             }, t -> reply(message, ":warning: Ошибка", getSimpleMessage(t), scarlet)));
         });
 
@@ -58,15 +60,23 @@ public class Listener extends ListenerAdapter {
                 var schematic = ContentHandler.parseSchematic(file);
                 var image = ContentHandler.parseSchematicImage(schematic);
 
+                var builder = new StringBuilder();
+                schematic.requirements().each((item, amount) -> {
+                    if (emojis.containsKey(item)) builder.append("<:").append(item.name.replaceAll("-", "")).append(":").append(emojis.get(item)).append(">");
+                    else builder.append(item.name);
+                    builder.append(" ").append(amount).append(" ");
+                });
+
                 var embed = new EmbedBuilder()
                         .setTitle(schematic.name())
                         .setDescription(schematic.description())
-                        .setAuthor(message.getMember().getEffectiveName(), message.getMember().getEffectiveAvatarUrl(), message.getMember().getEffectiveAvatarUrl())
+                        .setAuthor(requireNonNull(message.getMember()).getEffectiveName(), message.getMember().getEffectiveAvatarUrl(), message.getMember().getEffectiveAvatarUrl())
+                        .addField("Ресурсы для постройки", builder.toString(), true)
                         .setFooter(schematic.width + "x" + schematic.height + ", " + schematic.tiles.size + " блоков")
                         .setColor(accent.argb8888())
                         .setImage("attachment://image.png");
 
-                schematicsChannel.sendMessageEmbeds(embed.build()).addFiles(fromData(image, "image.png")).queue(queue -> reply(message, ":white_check_mark: Успешно", ":wrench: Схема отправлена в " + schematicsChannel.getAsMention(), accent));
+                schematicsWebhook.sendMessageEmbeds(embed.build()).addFiles(fromData(image, "image.png")).queue(queue -> reply(message, ":white_check_mark: Успешно", ":wrench: Схема отправлена в " + schematicsWebhook.getChannel().getAsMention(), accent));
             }, t -> reply(message, ":warning: Ошибка", getSimpleMessage(t), scarlet)));
         });
     }
