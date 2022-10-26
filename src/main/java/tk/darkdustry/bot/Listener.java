@@ -13,7 +13,6 @@ import java.io.File;
 
 import static arc.graphics.Color.scarlet;
 import static arc.util.Strings.*;
-import static java.util.Objects.requireNonNull;
 import static mindustry.graphics.Pal.accent;
 import static net.dv8tion.jda.api.utils.FileUpload.fromData;
 import static tk.darkdustry.bot.Vars.*;
@@ -44,7 +43,7 @@ public class Listener extends ListenerAdapter {
                 var embed = new EmbedBuilder()
                         .setTitle(map.name())
                         .setDescription(map.description())
-                        .setAuthor(requireNonNull(message.getMember()).getEffectiveName(), attachment.getUrl(), message.getMember().getEffectiveAvatarUrl())
+                        .setAuthor(message.getMember().getEffectiveName(), attachment.getUrl(), message.getMember().getEffectiveAvatarUrl())
                         .setFooter(map.width + "x" + map.height)
                         .setColor(accent.argb8888())
                         .setImage("attachment://image.png");
@@ -71,7 +70,7 @@ public class Listener extends ListenerAdapter {
                 var embed = new EmbedBuilder()
                         .setTitle(schematic.name())
                         .setDescription(schematic.description())
-                        .setAuthor(requireNonNull(message.getMember()).getEffectiveName(), attachment.getUrl(), message.getMember().getEffectiveAvatarUrl())
+                        .setAuthor(message.getMember().getEffectiveName(), attachment.getUrl(), message.getMember().getEffectiveAvatarUrl())
                         .addField("Requirements", builder.toString(), true)
                         .setFooter(schematic.width + "x" + schematic.height + ", " + schematic.tiles.size + " blocks")
                         .setColor(accent.argb8888())

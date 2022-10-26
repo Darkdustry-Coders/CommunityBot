@@ -34,8 +34,8 @@ public class Main {
                     .build()
                     .awaitReady();
 
-            mapsWebhook = new WebhookImpl(requireNonNull(jda.getTextChannelById(config.mapsChannelId)), config.mapsWebhookId, INCOMING).setToken(config.mapsWebhookToken);
-            schematicsWebhook = new WebhookImpl(requireNonNull(jda.getTextChannelById(config.schematicsChannelId)), config.schematicsWebhookId, INCOMING).setToken(config.schematicsWebhookToken);
+            mapsWebhook = new WebhookImpl(jda.getTextChannelById(config.mapsChannelId), config.mapsWebhookId, INCOMING).setToken(config.mapsWebhookToken);
+            schematicsWebhook = new WebhookImpl(jda.getTextChannelById(config.schematicsChannelId), config.schematicsWebhookId, INCOMING).setToken(config.schematicsWebhookToken);
         } catch (Exception e) {
             err("Failed to launch Community Bot. Make sure the provided token and guild/channel IDs in the configuration are correct.");
             err(e);
