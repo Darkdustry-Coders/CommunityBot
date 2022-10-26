@@ -49,7 +49,7 @@ public class Listener extends ListenerAdapter {
                         .setColor(accent.argb8888())
                         .setImage("attachment://image.png");
 
-                mapsWebhook.sendMessageEmbeds(embed.build()).addFiles(fromData(image, "image.png")).queue(queue -> reply(message, ":map: Успешно", "Карта отправлена в " + mapsWebhook.getChannel().getAsMention(), accent));
+                mapsWebhook.sendMessageEmbeds(embed.build()).addFiles(fromData(image, "image.png"), fromData(attachment.getProxy().download().get(), attachment.getFileName())).queue(queue -> reply(message, ":map: Успешно", "Карта отправлена в " + mapsWebhook.getChannel().getAsMention(), accent));
             }, t -> reply(message, ":warning: Ошибка", getSimpleMessage(t), scarlet)));
         });
 
@@ -77,7 +77,7 @@ public class Listener extends ListenerAdapter {
                         .setColor(accent.argb8888())
                         .setImage("attachment://image.png");
 
-                schematicsWebhook.sendMessageEmbeds(embed.build()).addFiles(fromData(image, "image.png")).queue(queue -> reply(message, ":wrench: Успешно", "Схема отправлена в " + schematicsWebhook.getChannel().getAsMention(), accent));
+                schematicsWebhook.sendMessageEmbeds(embed.build()).addFiles(fromData(image, "image.png"), fromData(attachment.getProxy().download().get(), attachment.getFileName())).queue(queue -> reply(message, ":wrench: Успешно", "Схема отправлена в " + schematicsWebhook.getChannel().getAsMention(), accent));
             }, t -> reply(message, ":warning: Ошибка", getSimpleMessage(t), scarlet)));
         });
     }
