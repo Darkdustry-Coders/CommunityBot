@@ -12,7 +12,6 @@ import ru.mindustry.bot.components.ContentHandler;
 import java.io.File;
 
 import static arc.graphics.Color.scarlet;
-import static arc.util.Strings.format;
 import static arc.util.Strings.getSimpleMessage;
 import static mindustry.graphics.Pal.accent;
 import static net.dv8tion.jda.api.utils.FileUpload.fromData;
@@ -66,7 +65,7 @@ public class Listener extends ListenerAdapter {
                 var image = ContentHandler.parseSchematicImage(schematic);
 
                 var builder = new StringBuilder();
-                schematic.requirements().each((item, amount) -> builder.append(emojis.containsKey(item) ? format("<:@:@>", item.name.replaceAll("-", ""), emojis.get(item)) : item.name).append(" ").append(amount).append(" "));
+                schematic.requirements().each((item, amount) -> builder.append(item.localizedName).append(": ").append(amount).append("; "));
 
                 var embed = new EmbedBuilder()
                         .setTitle(schematic.name())
