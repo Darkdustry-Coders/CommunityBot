@@ -1,4 +1,4 @@
-group = "tk.darkdustry"
+group = "ru.mindustry"
 version = "1.0.0"
 
 plugins {
@@ -7,25 +7,25 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven(url = "https://www.jitpack.io")
+    maven(url = "https://jitpack.io")
 }
 
 dependencies {
-    implementation("net.dv8tion:JDA:5.0.0-alpha.21")
+    implementation("net.dv8tion:JDA:5.0.0-beta.2")
 
-    implementation("com.github.Anuken.Arc:arc-core:v140")
-    implementation("com.github.Anuken.Mindustry:core:v140")
-}
-
-tasks.jar {
-    manifest {
-        attributes["Main-Class"] = "tk.darkdustry.bot.Main"
-    }
-
-    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    implementation("com.github.Anuken.Arc:arc-core:v140.4")
+    implementation("com.github.Anuken.Mindustry:core:v140.4")
 }
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
+}
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "ru.mindustry.bot.Main"
+    }
+
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
