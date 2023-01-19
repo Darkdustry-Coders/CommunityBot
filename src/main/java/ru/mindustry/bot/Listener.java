@@ -1,4 +1,4 @@
-package tk.darkdustry.bot;
+package ru.mindustry.bot;
 
 import arc.func.Cons;
 import arc.graphics.Color;
@@ -7,15 +7,16 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import tk.darkdustry.bot.components.ContentHandler;
+import ru.mindustry.bot.components.ContentHandler;
 
 import java.io.File;
 
 import static arc.graphics.Color.scarlet;
-import static arc.util.Strings.*;
+import static arc.util.Strings.format;
+import static arc.util.Strings.getSimpleMessage;
 import static mindustry.graphics.Pal.accent;
 import static net.dv8tion.jda.api.utils.FileUpload.fromData;
-import static tk.darkdustry.bot.Vars.*;
+import static ru.mindustry.bot.Vars.*;
 
 public class Listener extends ListenerAdapter {
 
@@ -48,7 +49,7 @@ public class Listener extends ListenerAdapter {
                         .setColor(accent.argb8888())
                         .setImage("attachment://image.png");
 
-                mapsWebhook.sendMessageEmbeds(embed.build()).addFiles(fromData(image, "image.png"), fromData(attachment.getProxy().download().get(), attachment.getFileName())).queue(queue -> reply(message, ":map: Успешно", "Карта отправлена в " + mapsWebhook.getChannel().getAsMention(), accent));
+                mapsChannel.sendMessageEmbeds(embed.build()).addFiles(fromData(image, "image.png"), fromData(attachment.getProxy().download().get(), attachment.getFileName())).queue(queue -> reply(message, ":map: Успешно", "Карта отправлена в " + mapsChannel.getAsMention(), accent));
             }, t -> reply(message, ":warning: Ошибка", getSimpleMessage(t), scarlet)));
         });
 
@@ -76,7 +77,7 @@ public class Listener extends ListenerAdapter {
                         .setColor(accent.argb8888())
                         .setImage("attachment://image.png");
 
-                schematicsWebhook.sendMessageEmbeds(embed.build()).addFiles(fromData(image, "image.png"), fromData(attachment.getProxy().download().get(), attachment.getFileName())).queue(queue -> reply(message, ":wrench: Успешно", "Схема отправлена в " + schematicsWebhook.getChannel().getAsMention(), accent));
+                schematicsChannel.sendMessageEmbeds(embed.build()).addFiles(fromData(image, "image.png"), fromData(attachment.getProxy().download().get(), attachment.getFileName())).queue(queue -> reply(message, ":wrench: Успешно", "Схема отправлена в " + schematicsChannel.getAsMention(), accent));
             }, t -> reply(message, ":warning: Ошибка", getSimpleMessage(t), scarlet)));
         });
     }

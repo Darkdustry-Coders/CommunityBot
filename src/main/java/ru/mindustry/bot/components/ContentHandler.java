@@ -1,4 +1,4 @@
-package tk.darkdustry.bot.components;
+package ru.mindustry.bot.components;
 
 import arc.files.Fi;
 import arc.graphics.Pixmap;
@@ -18,7 +18,8 @@ import java.io.*;
 
 import static arc.util.io.Streams.emptyBytes;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static tk.darkdustry.bot.Vars.*;
+import static ru.mindustry.bot.Vars.currentGraphics;
+import static ru.mindustry.bot.Vars.currentImage;
 
 public class ContentHandler {
 

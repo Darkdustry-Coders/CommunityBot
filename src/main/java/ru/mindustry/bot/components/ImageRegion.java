@@ -1,4 +1,4 @@
-package tk.darkdustry.bot.components;
+package ru.mindustry.bot.components;
 
 import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.graphics.g2d.TextureAtlas.TextureAtlasData.Region;
@@ -6,7 +6,7 @@ import arc.graphics.g2d.TextureAtlas.TextureAtlasData.Region;
 import java.awt.image.BufferedImage;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static tk.darkdustry.bot.Vars.regions;
+import static ru.mindustry.bot.Vars.regions;
 
 public class ImageRegion extends AtlasRegion {
 
