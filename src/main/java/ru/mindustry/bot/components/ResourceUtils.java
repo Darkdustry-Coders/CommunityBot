@@ -109,26 +109,26 @@ public class ResourceUtils {
 
     private static void loadItemEmojis() {
         Vars.emojis.putAll(
-                scrap, 770045449750577192L,
-                copper, 770045449603645492L,
-                lead, 770045449846521856L,
-                graphite, 770045449729343488L,
-                coal, 770045449582411817L,
-                titanium, 770045449822142554L,
-                thorium, 770045449612558366L,
-                silicon, 770045449696182302L,
-                plastanium, 801022400211976243L,
-                phaseFabric, 770045449326821413L,
-                surgeAlloy, 770045449700507668L,
-                sporePod, 770045449692250123L,
-                sand, 770045449758441502L,
-                blastCompound, 770045449654108211L,
-                pyratite, 770045449335209985L,
-                metaglass, 770045449834463242L,
-                beryllium, 972298068097662987L,
-                tungsten, 962490016506994708L,
-                oxide, 973958882563063891L,
-                carbide, 973958957909573673L
+                scrap, 1033628774664781954L,
+                copper, 1033628774664781954L,
+                lead, 1033628774664781954L,
+                graphite, 1033628774664781954L,
+                coal, 1033628774664781954L,
+                titanium, 1033628774664781954L,
+                thorium, 1033628774664781954L,
+                silicon, 1033628774664781954L,
+                plastanium, 1033628774664781954L,
+                phaseFabric, 1033628774664781954L,
+                surgeAlloy, 1033628774664781954L,
+                sporePod, 1033628774664781954L,
+                sand, 1033628774664781954L,
+                blastCompound, 1033628774664781954L,
+                pyratite, 1033628774664781954L,
+                metaglass, 1033628774664781954L,
+                beryllium, 1033628774664781954L,
+                tungsten, 1033628774664781954L,
+                oxide, 1033628774664781954L,
+                carbide, 1033628774664781954L
         );
     }
 
