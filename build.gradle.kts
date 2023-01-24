@@ -33,6 +33,7 @@ tasks.jar {
         attributes["Main-Class"] = "ru.mindustry.bot.Main"
     }
 
+    archiveFileName.set("MindustryBot.jar")
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
@@ -43,7 +44,7 @@ val relocate = tasks.register<ConfigureShadowRelocation>("relocateShadowJar") {
 }
 
 tasks.shadowJar {
-    archiveFileName.set("MindustryBot.jar")
+    archiveFileName.set("MindustryBot-shadowJar.jar")
     archiveClassifier.set("plugin")
     dependsOn(relocate)
     minimize()

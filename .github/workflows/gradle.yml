@@ -23,3 +23,12 @@ jobs:
         with:
           name: ${{ github.event.repository.name }}
           path: build/libs/
+
+      - name: Сборка бота в shadowJar
+        run: ./gradlew shadowJar
+
+      - name: Выгрузка shadowJar
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}-shadowJar
+          path: build/libs/
