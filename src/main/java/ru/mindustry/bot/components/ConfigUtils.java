@@ -11,7 +11,7 @@ public class ConfigUtils {
         json.setOutputType(JsonWriter.OutputType.json);
         json.setUsePrototypes(false);
 
-        var file = dataDirectory.child("mindustry-bot-config.json");
+        var file = dataDirectory.child("config.json");
 
         if (file.exists()) {
             config = json.fromJson(Config.class, file.reader());

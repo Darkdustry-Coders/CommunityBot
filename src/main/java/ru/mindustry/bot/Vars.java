@@ -15,7 +15,7 @@ public class Vars {
     public static final Json json = new Json();
     public static final CommandHandler handler = new CommandHandler("");
 
-    public static final Fi dataDirectory = Fi.get(".community");
+    public static final Fi dataDirectory = Fi.get(".mindustry");
     public static final Fi cache = dataDirectory.child("cache");
     public static final Fi resources = dataDirectory.child("resources");
     public static final Fi sprites = dataDirectory.child("sprites");
