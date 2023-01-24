@@ -1,9 +1,9 @@
 package ru.mindustry.bot.components;
 
+import static ru.mindustry.bot.Vars.*;
+
 import arc.util.Log;
 import arc.util.serialization.JsonWriter;
-
-import static ru.mindustry.bot.Vars.*;
 
 public class ConfigUtils {
 
@@ -24,9 +24,8 @@ public class ConfigUtils {
     }
 
     public static class Config {
-        public String token = "token";
-        public String prefix = "!";
 
+        public String token = "token";
         public long guildId = 0L;
         public long mapsChannelId = 0L;
         public long schematicsChannelId = 0L;

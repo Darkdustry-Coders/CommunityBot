@@ -1,14 +1,14 @@
 package ru.mindustry.bot;
 
-import net.dv8tion.jda.api.JDABuilder;
-import ru.mindustry.bot.components.ConfigUtils;
-import ru.mindustry.bot.components.ResourceUtils;
-
 import static arc.util.Log.err;
 import static net.dv8tion.jda.api.requests.GatewayIntent.GUILD_MEMBERS;
 import static net.dv8tion.jda.api.requests.GatewayIntent.MESSAGE_CONTENT;
 import static net.dv8tion.jda.internal.requests.RestActionImpl.setDefaultFailure;
 import static ru.mindustry.bot.Vars.*;
+
+import net.dv8tion.jda.api.JDABuilder;
+import ru.mindustry.bot.components.ConfigUtils;
+import ru.mindustry.bot.components.ResourceUtils;
 
 public class Main {
 
@@ -26,13 +26,15 @@ public class Main {
         setDefaultFailure(null);
 
         try {
-            jda = JDABuilder.createLight(config.token)
+            jda =
+                JDABuilder
+                    .createLight(config.token)
                     .enableIntents(GUILD_MEMBERS, MESSAGE_CONTENT)
                     .addEventListeners(new Listener())
                     .build()
                     .awaitReady();
 
-            var guild = jda.getGuildById(config.guildId);
+            guild = jda.getGuildById(config.guildId);
             if (guild == null) {
                 err("Couldn't find guild by id: @", config.guildId);
                 return;
@@ -45,6 +47,6 @@ public class Main {
             err(e);
         }
 
-        Listener.loadCommands(config.prefix);
+        Listener.registerCommands();
     }
 }

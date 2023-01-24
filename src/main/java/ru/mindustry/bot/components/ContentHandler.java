@@ -1,25 +1,24 @@
 package ru.mindustry.bot.components;
 
+import static arc.util.io.Streams.emptyBytes;
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
+import static ru.mindustry.bot.Vars.currentGraphics;
+import static ru.mindustry.bot.Vars.currentImage;
+
 import arc.files.Fi;
 import arc.graphics.Pixmap;
 import arc.graphics.PixmapIO.PngWriter;
 import arc.graphics.g2d.Draw;
 import arc.util.io.Streams.OptimizedByteArrayOutputStream;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import javax.imageio.ImageIO;
 import mindustry.entities.units.BuildPlan;
 import mindustry.game.Schematic;
 import mindustry.game.Schematics;
 import mindustry.graphics.Drawf;
 import mindustry.io.MapIO;
 import mindustry.maps.Map;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
-
-import static arc.util.io.Streams.emptyBytes;
-import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static ru.mindustry.bot.Vars.currentGraphics;
-import static ru.mindustry.bot.Vars.currentImage;
 
 public class ContentHandler {
 
@@ -44,9 +43,11 @@ public class ContentHandler {
 
         Draw.reset();
 
-        for (int x = 0; x < schematic.width + 2; x++)
-            for (int y = 0; y < schematic.height + 2; y++)
-                Draw.rect("metal-floor", x * 8f, y * 8f);
+        for (int x = 0; x < schematic.width + 2; x++) for (int y = 0; y < schematic.height + 2; y++) Draw.rect(
+            "metal-floor",
+            x * 8f,
+            y * 8f
+        );
 
         plans.each(plan -> Drawf.squareShadow(plan.drawx(), plan.drawy(), plan.block.size * 16f, 1f));
 

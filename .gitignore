@@ -6,7 +6,7 @@ build/
 .idea
 
 ### Bot testing ###
-.community
+.mindustry/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
