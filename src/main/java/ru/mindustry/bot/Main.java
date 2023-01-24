@@ -35,13 +35,8 @@ public class Main {
                     .awaitReady();
 
             guild = jda.getGuildById(config.guildId);
-            if (guild == null) {
-                err("Couldn't find guild by id: @", config.guildId);
-                return;
-            }
-
-            mapsChannel = guild.getTextChannelById(config.mapsChannelId);
-            schematicsChannel = guild.getTextChannelById(config.schematicsChannelId);
+            mapsChannel = jda.getTextChannelById(config.mapsChannelId);
+            schematicsChannel = jda.getTextChannelById(config.schematicsChannelId);
         } catch (Exception e) {
             err("Failed to launch the bot. Make sure the provided token and guild/channel IDs in the configuration are correct.");
             err(e);
