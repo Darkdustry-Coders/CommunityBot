@@ -16,7 +16,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Сборка бота в jar
-        run: ./gradlew shadowJar
+        run: ./gradlew jar
 
       - name: Выгрузка jar
         uses: actions/upload-artifact@v2
