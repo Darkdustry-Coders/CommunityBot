@@ -2,6 +2,6 @@
     <h1>Community Bot</h1>
 </div>
 
-## Features (coming soon):
+## Features:
 
 * Posting mindustry maps & schemes
